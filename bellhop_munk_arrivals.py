@@ -1,7 +1,7 @@
 #=======================================================================
 # 
 # Bellhop: Munk profile + arrivals
-# Faro, Qua Mai 26 19:08:18 WEST 2021
+# Faro, Seg 11 Abr 2022 12:48:23 WEST 
 # Written by Orlando Camargo Rodriguez 
 # 
 #=======================================================================
@@ -130,7 +130,7 @@ rarray = squeeze( Pos['receiver_ranges'] )
 Nrr = rarray.size
 
 fig = figure()
-ax = fig.gca(projection='3d')
+ax = fig.add_subplot(111, projection="3d")
 
 for i in range(1,Nrr):
     tau = delay[i,0:Narr[i]]

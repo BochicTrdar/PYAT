@@ -2,7 +2,7 @@ from numpy import *
 
 def read_arrivals_asc(filename=None):    
     #*******************************************************************************
-    # Faro, Qua 26 Mai 2021 20:54:06 WEST 
+    # Faro, Seg 11 Abr 2022 12:50:20 WEST 
     # Written by Orlando Camargo Rodriguez
     # Based on read_arrivals_asc.m by Michael Porter
     #*******************************************************************************
@@ -47,27 +47,27 @@ def read_arrivals_asc(filename=None):
            Narrmx2 = int( fid.readline() )
            for ird in range(Nrz):
                for irr in range(Nrr):
-	           narr = int( fid.readline() )
+                   narr = int( fid.readline() )
                    Narr[ irr, ird, isd ] = narr
                    maxnarr = max( narr, maxnarr )
-		   if narr > 0:
-		      narr = min( narr, Narrmx )
-		      for k in range(narr):
+                   if narr > 0:
+                      narr = min( narr, Narrmx )
+                      for k in range(narr):
                           theline = str( fid.readline() )
                           datai = theline.split()
-		          amp   = float( datai[0] )
-		          phase = float( datai[1] )
+                          amp   = float( datai[0] )
+                          phase = float( datai[1] )
                           A[ irr, k, ird, isd ] = amp*exp( 1j*phase*pi/180.0 )
-		          rtau = float( datai[2] )
-		          itau = float( datai[3] )
- 		          delay[ irr, k, ird, isd ] = rtau + 1j*itau
-		          source_angle = float( datai[4] ) 
+                          rtau = float( datai[2] )
+                          itau = float( datai[3] )
+                          delay[ irr, k, ird, isd ] = rtau + 1j*itau
+                          source_angle = float( datai[4] ) 
                           SrcAngle[ irr, k, ird, isd ] = source_angle
-		          receiver_angle = float( datai[5] ) 
-		          RcvrAngle[ irr, k, ird, isd ] = receiver_angle
-		          bounces = int( datai[6] )
+                          receiver_angle = float( datai[5] ) 
+                          RcvrAngle[ irr, k, ird, isd ] = receiver_angle
+                          bounces = int( datai[6] )
                           NumTopBnc[ irr, k, ird, isd ] = bounces
-		          bounces = int( datai[7] )		       
+                          bounces = int( datai[7] )		       
                           NumBotBnc[ irr, k, ird, isd ] = bounces
        A         = A[        :,0:maxnarr,:,:]
        delay     = delay[    :,0:maxnarr,:,:]
@@ -141,28 +141,28 @@ def read_arrivals_asc(filename=None):
                    for irr in range(Nrr):
                        Narr[ irr, ird, irtheta, isd ] = narr
                        maxnarr = max( narr, maxnarr )
-		       if narr > 0:
-		          narr = min( narr, Narrmx )
-		          for k in range(narr):
+                       if narr > 0:
+                          narr = min( narr, Narrmx )
+                          for k in range(narr):
                               theline = str( fid.readline() )
                               datai = theline.split()
-		              amp   = float( datai[0] )
-		              phase = float( datai[1] )
+                              amp   = float( datai[0] )
+                              phase = float( datai[1] )
                               A[ irr, k, ird, irtheta, isd ] = amp*exp( 1j*phase*pi/180.0 )
-		              rtau = float( datai[2] )
-		              itau = float( datai[3] )
- 		              delay[ irr, k, ird, irtheta, isd ] = rtau + 1j*itau
-		              theangle = float( datai[4] ) 
+                              rtau = float( datai[2] )
+                              itau = float( datai[3] )
+                              delay[ irr, k, ird, irtheta, isd ] = rtau + 1j*itau
+                              theangle = float( datai[4] ) 
                               SrcDeclAngle[ irr, k, ird, irtheta, isd ] = theangle
-		              theangle = float( datai[5] ) 
-		              SrcAzimAngle[ irr, k, ird, irtheta, isd ] = theangle
-		              theangle = float( datai[6] ) 
+                              theangle = float( datai[5] ) 
+                              SrcAzimAngle[ irr, k, ird, irtheta, isd ] = theangle
+                              theangle = float( datai[6] ) 
                               RcvrDeclAngle[ irr, k, ird, irtheta, isd ] = theangle
-		              theangle = float( datai[7] )
+                              theangle = float( datai[7] )
                               RcvrAzimAngle[ irr, k, ird, irtheta, isd ] = theangle
                               bounces = int( datai[8] )
                               NumTopBnc[ irr, k, ird, irtheta, isd ] = bounces
-		              bounces = int( datai[9] )		       
+                              bounces = int( datai[9] )		       
                               NumBotBnc[ irr, k, ird, irtheta, isd ] = bounces
        A            = A[            :,0:maxnarr,:,:,:]
        delay        = delay[        :,0:maxnarr,:,:,:]
