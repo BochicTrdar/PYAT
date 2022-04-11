@@ -1,9 +1,9 @@
 from numpy import *
-from pylab import *
+from matplotlib.pyplot import *
 
 def plotray(filename=None):    
     #*******************************************************************************
-    # Faro, Qua Mai 26 19:07:26 WEST 2021
+    # Faro, Seg 11 Abr 2022 12:40:41 WEST 
     # Written by Orlando Camargo Rodriguez
     # Based on plotray.m by Michael Porter
     #*******************************************************************************
@@ -39,19 +39,19 @@ def plotray(filename=None):
     for isz in range(Nsz):
         for ibeam in range(Nalpha):
 	   #alpha0    = float( fid.readline() )
-	    theline = str( fid.readline() )
-	    l = len( theline )
-	    if l > 0:
-	       alpha0 = float( theline )
- 	       theline = str( fid.readline() )
- 	       datai = theline.split()
- 	       nsteps    = int( datai[0] )
- 	       NumTopBnc = int( datai[1] )
- 	       NumBotBnc = int( datai[2] )
-	       r = zeros(nsteps)
-	       z = zeros(nsteps)
-	       for j in range(nsteps):
-	           theline = str(fid.readline())
+            theline = str( fid.readline() )
+            l = len( theline )
+            if l > 0:
+               alpha0 = float( theline )
+               theline = str( fid.readline() )
+               datai = theline.split()
+               nsteps    = int( datai[0] )
+               NumTopBnc = int( datai[1] )
+               NumBotBnc = int( datai[2] )
+               r = zeros(nsteps)
+               z = zeros(nsteps)
+               for j in range(nsteps):
+                   theline = str(fid.readline())
                    rz = theline.split()
                    r[j] = float( rz[0] )
                    z[j] = float( rz[1] )        
@@ -60,5 +60,5 @@ def plotray(filename=None):
                zmin = min( [ min(z), zmin ] )
                zmax = max( [ max(z), zmax ] )
                plot( r, -z )
-	       axis([rmin,rmax,-zmax,-zmin])
+               axis([rmin,rmax,-zmax,-zmin])
     fid.close()
