@@ -1,7 +1,7 @@
 #=======================================================================
 # 
 # Bellhop: Block problem
-# Faro, Qua Mai 26 19:08:29 WEST 2021
+# Faro, Seg 11 Abr 2022 12:45:18 WEST 
 # Written by Orlando Camargo Rodriguez 
 # 
 #=======================================================================
@@ -117,15 +117,16 @@ ys = nan
 pressure,geometry = readshd(filename,xs,ys)
 
 p = squeeze( pressure, axis=(0,1) )
-tl = 20*log10( abs( p ) )
+p = where( p == 0, nan, p )
+tl = -20*log10( abs( p ) )
 
 figure(1)
-pcolormesh(rarray,-zarray,tl,vmin=-90,vmax=0)
-fill_between(rbty,-zbty,-Dmax)
+pcolormesh(rarray,zarray,tl,vmin=60,vmax=90,cmap='jet_r',shading='auto')
+fill_between(rbty,zbty,Dmax)
 colorbar()
-plot(rs[0],-zs[0],marker="<",markersize=16,color="k")
+plot(rs[0],zs[0],marker="<",markersize=16,color="k")
 xlim(0,Rmax)
-ylim(-Dmax,0)
+ylim(Dmax,0)
 xlabel('Range (m)')
 ylabel('Depth (m)')
 title('Bellhop - Block problem')
