@@ -1,7 +1,7 @@
 #======================================================================
 # 
 # KRAKEN3D: wedge problem
-# Faro, Qua Mai 26 19:08:07 WEST 2021
+# Faro, Seg 11 Abr 2022 13:29:31 WEST 
 # Written by Orlando Camargo Rodriguez 
 #
 #======================================================================
@@ -170,7 +170,7 @@ nza = 101
 dr = zeros(nza)
 
 for i in range(nx):
-   print nx,i+1
+   print(nx,i+1)
    Di = zbty[0,i]
    zi = array([0,Di])
    zarrayi = linspace(0.0,Di,nza)
@@ -192,12 +192,12 @@ for i in range(nx):
 print('Organizing files...');
 
 for i in range(nx):
-    print nx,i+1
+    print (nx,i+1)
     for j in range(2,ny+1):
         thecommand = "cp range1_" + str(i+1) + ".env range" + str(j) + "_" + str(i+1) + ".env"
-	os.system( thecommand )
+        os.system( thecommand )
         thecommand = "cp range1_" + str(i+1) + ".mod range" + str(j) + "_" + str(i+1) + ".mod"
-	os.system( thecommand )
+        os.system( thecommand )
 
 #*******************************************************************************
 #
@@ -271,7 +271,7 @@ for i in range(ny):
         
         filename_at_node = 'range' + str(i+1) + '_' + str(j+1)
         fid.write( str( x[j]/1000.0 ) ); fid.write(' ')
-	fid.write( str( y[i]/1000.0 ) ); fid.write(' ')
+        fid.write( str( y[i]/1000.0 ) ); fid.write(' ')
         fid.write('\'');fid.write(filename_at_node);fid.write('\'\n')
 	
 fid.write(str(ntriangles));fid.write('\n')
@@ -283,11 +283,11 @@ inode = 1
 for iy in range( 1, ny ):
     for ix in range( 1, nx ):
         fid.write( str( inode          ) ); fid.write(' ')
-	fid.write( str( inode + 1      ) ); fid.write(' ')
-	fid.write( str( inode + nx     ) ); fid.write('\n')
         fid.write( str( inode + 1      ) ); fid.write(' ')
-	fid.write( str( inode + nx     ) ); fid.write(' ')
-	fid.write( str( inode + nx + 1 ) ); fid.write('\n')
+        fid.write( str( inode + nx     ) ); fid.write('\n')
+        fid.write( str( inode + 1      ) ); fid.write(' ')
+        fid.write( str( inode + nx     ) ); fid.write(' ')
+        fid.write( str( inode + nx + 1 ) ); fid.write('\n')
         inode = inode + 1
     inode = inode + 1
 
@@ -334,12 +334,12 @@ mismatch = std( tlref[1:-1] - tl[1:-1] )
 thetitle = 'KRAKEN3D - wedge problem @ ' + str(freq) + ' Hz'
 
 figure(1)
-pcolormesh(X,Y,tldisk), colorbar()
+pcolormesh(X,Y,tldisk,shading='auto'), colorbar()
 xlabel('X (m)')
 ylabel('Y (m)')
 title( thetitle )
 
-thetitle = 'KRAKEN3D @ ' + str(freq) + ' Hz - mismatch = ' + str(mismatch)
+thetitle = 'KRAKEN3D @ ' + str(freq) + ' Hz'
 
 figure(2)
 grid(True)
