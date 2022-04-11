@@ -1,10 +1,10 @@
 from numpy import *
-from pylab import *
+from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import Axes3D
 
 def plotray3d(filename=None):    
     #*******************************************************************************
-    # Faro, Qua Mai 26 19:07:39 WEST 2021
+    # Faro, Seg 11 Abr 2022 13:38:11 WEST 
     # Written by Orlando Camargo Rodriguez
     # Based on plotray3d.m by Michael Porter
     #*******************************************************************************
@@ -42,36 +42,36 @@ def plotray3d(filename=None):
     zmax = -1e9;
     
     fig = figure(1)
-    ax = fig.gca(projection='3d')
+    ax = fig.add_subplot(111, projection="3d")
     
     for isx in range(Nsx):
         for isy in range(Nsy):        
-	    for ibeam2 in range(Nbeta):
+            for ibeam2 in range(Nbeta):
                 for ibeam in range(Nalpha):
-		    theline   = str( fid.readline() )
-		    l = len( theline )
-		    if l > 0:
-	               alpha0    = float( theline )
- 	               theline = str( fid.readline() )
- 	               datai = theline.split()
- 	               nsteps    = int( datai[0] )
- 	               NumTopBnc = int( datai[1] )
- 	               NumBotBnc = int( datai[2] )
-	               x = zeros(nsteps)
-		       y = zeros(nsteps)
-	               z = zeros(nsteps)
-	               for j in range(nsteps):
-	                   theline = str(fid.readline())
+                    theline   = str( fid.readline() )
+                    l = len( theline )
+                    if l > 0:
+                       alpha0    = float( theline )
+                       theline = str( fid.readline() )
+                       datai = theline.split()
+                       nsteps    = int( datai[0] )
+                       NumTopBnc = int( datai[1] )
+                       NumBotBnc = int( datai[2] )
+                       x = zeros(nsteps)
+                       y = zeros(nsteps)
+                       z = zeros(nsteps)
+                       for j in range(nsteps):
+                           theline = str(fid.readline())
                            xyz = theline.split()
                            x[j] = float( xyz[0] )
                            y[j] = float( xyz[1] )
-		           z[j] = float( xyz[2] )        
+                           z[j] = float( xyz[2] )        
                        xmin = min( [ min(x), xmin ] )
                        xmax = max( [ max(x), xmax ] )
                        ymin = min( [ min(y), ymin ] )
                        ymax = max( [ max(y), ymax ] )		       
                        zmin = min( [ min(z), zmin ] )
                        zmax = max( [ max(z), zmax ] )
-		       ax.plot(x,y,-z)
+                       ax.plot(x,y,-z)
     
     fid.close()
