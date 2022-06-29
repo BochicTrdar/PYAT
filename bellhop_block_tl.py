@@ -1,7 +1,7 @@
 #=======================================================================
 # 
 # Bellhop: Block problem
-# Faro, Seg 11 Abr 2022 12:45:18 WEST 
+# Faro, Ter 28 Jun 2022 19:36:13 WEST 
 # Written by Orlando Camargo Rodriguez 
 # 
 #=======================================================================
@@ -112,9 +112,7 @@ system("bellhop.exe block")
 print( "Reading output data..." )
 
 filename = 'block.shd'
-xs = nan
-ys = nan
-pressure,geometry = readshd(filename,xs,ys)
+pressure,geometry = readshd(filename,nan,nan,nan)
 
 p = squeeze( pressure, axis=(0,1) )
 p = where( p == 0, nan, p )

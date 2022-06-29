@@ -307,7 +307,7 @@ os.system("field3d.exe 3dpe > field3d.prt")
 print( "Reading output data..." )
 
 filename = '3dpe.shd'
-pressure,geometry = readshd(filename,xs,ys)
+pressure,geometry = readshd(filename,xs,ys,nan)
 
 thetas = geometry["thetas"]
 rarray = geometry["rarray"]

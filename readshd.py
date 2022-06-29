@@ -1,8 +1,8 @@
 from numpy import *
 
-def readshd( filename=None, xs=None, ys=None ):
+def readshd( filename=None, xs=None, ys=None, freq=None ):
     #*******************************************************************************
-    # Faro, Ter 30 Nov 2021 18:20:51 WET 
+    # Faro, Sex 24 Jun 2022 20:18:06 WEST 
     # Written by Orlando Camargo Rodriguez
     # Based on read_shd_bin.m by Michael Porter
     #*******************************************************************************
@@ -16,14 +16,14 @@ def readshd( filename=None, xs=None, ys=None ):
    Ntheta = int(   fromfile( fid, int32  , 1 ) )
    Nsx    = int(   fromfile( fid, int32  , 1 ) )
    Nsy    = int(   fromfile( fid, int32  , 1 ) )
-   Nsd    = int(   fromfile( fid, int32  , 1 ) )
-   Nrd    = int(   fromfile( fid, int32  , 1 ) )
-   Nrr    = int(   fromfile( fid, int32  , 1 ) ) 
+   Nsz    = int(   fromfile( fid, int32  , 1 ) )
+   Nrz    = int(   fromfile( fid, int32  , 1 ) )
+   Nrr    = int(   fromfile( fid, int32  , 1 ) )
    atten  = float( fromfile( fid, float32, 1 ) )
    fid.seek( 3 * 4 * recl ); # reposition to end of record 3
    freqVec = fromfile( fid, float32, Nfreq  )
    fid.seek( 4 * 4 * recl ); # reposition to end of record 4
-   thetas  = fromfile( fid, float32, Ntheta )
+   theta  = fromfile( fid, float32, Ntheta )
    if  ( PlotType[ 0 : 1 ] != 'TL' ):
        fid.seek( 5 * 4 * recl ); # reposition to end of record 4
        Xs     = fromfile( fid, float32, Nsx )
@@ -37,32 +37,35 @@ def readshd( filename=None, xs=None, ys=None ):
        Pos_S_y     = fromfile( fid, float32, 2 )
        Ys          = linspace( Pos_S_y[0], Pos_S_y[1], Nsy )
    fid.seek( 7 * 4 * recl ) # reposition to end of record 6
-   zs = fromfile( fid, float32, Nsd )
+   zs = fromfile( fid, float32, Nsz )
    fid.seek( 8 * 4 * recl ) # reposition to end of record 7
-   zarray =  fromfile( fid, float32, Nrd )
+   zarray =  fromfile( fid, float32, Nrz )
    fid.seek( 9 * 4 * recl ) # reposition to end of record 8
    rarray =  fromfile( fid, float32, Nrr )
    if PlotType == 'rectilin  ':
-       pressure = zeros( (Ntheta, Nsd, Nrd, Nrr) ) + 1j*zeros( (Ntheta, Nsd, Nrd, Nrr) )
-       Nrcvrs_per_range = Nrd
+       pressure = zeros( (Ntheta, Nsz, Nrz, Nrr) ) + 1j*zeros( (Ntheta, Nsz, Nrz, Nrr) )
+       Nrcvrs_per_range = Nrz
    elif PlotType == 'irregular ':
-       pressure = zeros( (Ntheta, Nsd,   1, Nrr) ) + 1j*zeros( (Ntheta, Nsd, Nrd, Nrr) )
+       pressure = zeros( (Ntheta, Nsz,   1, Nrr) ) + 1j*zeros( (Ntheta, Nsz,   1, Nrr) )
        Nrcvrs_per_range = 1
    else:
-       pressure = zeros( (Ntheta, Nsd, Nrd, Nrr) )
-       Nrcvrs_per_range = Nrd
-   pressure = zeros( (Ntheta,Nsd,Nrcvrs_per_range,Nrr) ) + 1j*zeros( (Ntheta,Nsd,Nrcvrs_per_range,Nrr) )
-   if isnan( xs ):    
+       pressure = zeros( (Ntheta, Nsz, Nrz, Nrr) ) + 1j*zeros( (Ntheta, Nsz, Nrz, Nrr) )
+       Nrcvrs_per_range = Nrz
+   if isnan( xs ):
+      ifreq = 0
+      if isnan(freq) == 'False': 
+         freqdiff = abs( freqVec - freq )
+         ifreq = freqdiff.argmin( )
       for itheta in range(Ntheta):
-          for isd in range( Nsd ):
-              for ird in range( Nrcvrs_per_range ):
-                  recnum = 10 + itheta * Nsd * Nrcvrs_per_range + isd * Nrcvrs_per_range + ird
+          for isz in range( Nsz ):
+              for irz in range( Nrcvrs_per_range ):
+                  recnum = 10 + ifreq*Ntheta*Nsz*Nrcvrs_per_range + itheta*Nsz*Nrcvrs_per_range + isz* Nrcvrs_per_range + irz
                   status = fid.seek( recnum * 4 * recl ) # Move to end of previous record
                   if ( status == -1 ):
                      print('Seek to specified record failed in readshd...')
                   temp = fromfile( fid, float32, 2 * Nrr ) # Read complex data
-                  for k in range(Nrr):
-                      pressure[ itheta, isd, ird, k ] = temp[ 2 * k ] + 1j * temp[ 2*k + 1 ]
+                  indexes = arange(0,2*Nrr,2)
+                  pressure[ itheta, isz, irz, : ] = temp[indexes] + 1j*temp[indexes+1]
 
    else:    
        xdiff = abs( Xs - xs * 1000.0 )
@@ -70,16 +73,16 @@ def readshd( filename=None, xs=None, ys=None ):
        ydiff = abs( Ys - ys * 1000.0 )
        idxY  = ydiff.argmin(0)
        for itheta in range(Ntheta):
-           for isd in range(Nsd):
-               for ird in range( Nrcvrs_per_range ):
-                   recnum = 10 + idxX * Nsy * Ntheta * Nsd * Nrcvrs_per_range + idxY * Ntheta * Nsd * Nrcvrs_per_range + itheta * Nsd * Nrcvrs_per_range + isd * Nrcvrs_per_range + ird
+           for isz in range(Nsz):
+               for irz in range( Nrcvrs_per_range ):
+                   recnum = 10 + idxX * Nsy * Ntheta * Nsz * Nrcvrs_per_range + idxY * Ntheta * Nsz * Nrcvrs_per_range + itheta * Nsz * Nrcvrs_per_range + isz * Nrcvrs_per_range + irz
                    status = fid.seek( recnum * 4 * recl ) # Move to end of previous record
                    if ( status == -1 ):
                       print('Seek to specified record failed in read_shd_bin')
                    temp = fromfile( fid, float32, 2 * Nrr ) # Read complex data
-                   for k in range(Nrr):
-                       pressure[ itheta, isd, ird, k ] = temp[ 2 * k ] + 1j * temp[ 2*k + 1 ]
+                   indexes = arange(0,2*Nrr,2)
+                   pressure[ itheta, isz, irz, : ] = temp[indexes] + 1j*temp[indexes+1]
                
        fid.close()
-   geometry = {"zs":zs, "f":freqVec,"thetas":thetas,"rarray":rarray,"zarray":zarray}
+   geometry = {"zs":zs, "f":freqVec,"thetas":theta,"rarray":rarray,"zarray":zarray}
    return pressure,geometry

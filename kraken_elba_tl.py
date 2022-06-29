@@ -1,7 +1,7 @@
 #==================================================================
 #  
 #  KRAKEN: Elba waveguide
-#  Faro, Seg 11 Abr 2022 12:20:12 WEST 
+#  Faro, Ter 28 Jun 2022 19:37:45 WEST 
 #  Written by Orlando Camargo Rodriguez 
 #  
 #==================================================================
@@ -152,9 +152,7 @@ system("field.exe elba < elba.flp")
 print( "Reading output data..." )
 
 filename = 'elba.shd'
-xs = nan
-ys = nan
-pressure,geometry = readshd(filename,xs,ys)
+pressure,geometry = readshd(filename,nan,nan,nan)
 
 Modes,bc = readmod('elba.mod')
 

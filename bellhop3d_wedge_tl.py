@@ -1,7 +1,7 @@
 #======================================================================
 # 
 # Bellhop3D: tl test
-# Faro, Seg 11 Abr 2022 13:45:55 WEST 
+# Faro, Ter 28 Jun 2022 19:35:51 WEST 
 # Written by Orlando Camargo Rodriguez 
 #
 #======================================================================
@@ -122,7 +122,7 @@ system("bellhop3d.exe wedge")
 print( "Reading output data..." )
 
 filename = 'wedge.shd'
-pressure,geometry = readshd(filename,xs,ys)
+pressure,geometry = readshd(filename,xs,ys,nan)
 
 p = squeeze( pressure, axis=(0,1) )
 p = squeeze( p )
