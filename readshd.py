@@ -2,7 +2,7 @@ from numpy import *
 
 def readshd( filename=None, xs=None, ys=None, freq=None ):
     #*******************************************************************************
-    # Faro, Sex 24 Jun 2022 20:18:06 WEST 
+    # Faro, dom 16 jun 2024 19:37:41 
     # Written by Orlando Camargo Rodriguez
     # Based on read_shd_bin.m by Michael Porter
     #*******************************************************************************
@@ -41,7 +41,7 @@ def readshd( filename=None, xs=None, ys=None, freq=None ):
    fid.seek( 8 * 4 * recl ) # reposition to end of record 7
    zarray =  fromfile( fid, float32, Nrz )
    fid.seek( 9 * 4 * recl ) # reposition to end of record 8
-   rarray =  fromfile( fid, float32, Nrr )
+   rarray =  fromfile( fid, float64, Nrr )
    if PlotType == 'rectilin  ':
        pressure = zeros( (Ntheta, Nsz, Nrz, Nrr) ) + 1j*zeros( (Ntheta, Nsz, Nrz, Nrr) )
        Nrcvrs_per_range = Nrz
@@ -53,7 +53,7 @@ def readshd( filename=None, xs=None, ys=None, freq=None ):
        Nrcvrs_per_range = Nrz
    if isnan( xs ):
       ifreq = 0
-      if isnan(freq) == 'False': 
+      if isnan(freq) == False: 
          freqdiff = abs( freqVec - freq )
          ifreq = freqdiff.argmin( )
       for itheta in range(Ntheta):
