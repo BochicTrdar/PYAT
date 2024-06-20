@@ -1,7 +1,7 @@
 #==================================================================
 #  
 #  KRAKEN: Elba waveguide
-#  Gambelas, qui 20 jun 2024 12:24:40 
+#  Faro, qui 20 jun 2024 19:57:16 
 #  Written by Orlando Camargo Rodriguez 
 #  
 #==================================================================
@@ -24,6 +24,8 @@ cw   = 1500.0 # sound speed in water
 cb   = 1700.0 # sound speed in lower halfspace
 rhow =    1.0 # density in water
 rhob =    2.0 # density in lower halfspace
+
+w = 2*pi*freq 
 
 zs = array([10.0]) # Source depth
 rs = array([ 0.0]) # Auxiliary parameter 
@@ -79,6 +81,9 @@ sspdata = loadtxt("elba.ssp")
 
 z = sspdata[:,0]; zmax = max( z )
 c = sspdata[:,1]
+
+z0,c0 = z,c # Needed for turning points 
+
 nz = z.size
 cs = zeros(nz)
 rho = ones(nz)
@@ -192,6 +197,98 @@ for i in range(4):
 subplot(141)
 ylabel('Depth (m)')
 
+icmin = argmin( c0 )
+
+if size( icmin ) == 2:
+   print('Unable to find turning depths: there is more than one minimal value of sound speed...')
+else:
+#  This piece of code needs some improvement because it won't handle cmin = c[0] or cmin = c[-1]
+   km = real( k )
+   zcmin = z0[icmin]; cmin = min( c0 ); cmax = max( c0 ); nc = size( c0 )
+   kmax = w/cmin
+   cos_thetam = km/kmax
+   cos_thetam = cos_thetam[cos_thetam < 1]
+   nk = size( cos_thetam )
+   thetam = 180/pi*arccos( cos_thetam ) 
+   thetamax = max( thetam ); thetas = linspace(-thetamax,thetamax,2*nk) 
+   thetas = thetas[ thetas > 0 ]
+#======================================================================
+# Turning points for modes: 
+#======================================================================
+   zTu = zeros(nk)
+   zTd = zTu + z0[-1]
+   
+   for i in range(nk):
+       cT = w/( km[i] )
+       f = c0 - cT; 
+       fS = sign(f)
+       dfS = diff(fS)
+       ichanges = where( dfS != 0 )[0]
+       lichanges = size( ichanges )
+       if lichanges == 1:
+          i0 = ichanges[0]
+          i1 = i0 + 1
+          slope = ( f[i1] - f[i0] )/( z0[i1] - z0[i0] )
+          if ( z0[i0] < zcmin )&( z0[i0] > z0[0] ):
+             zTu[i] = z0[i0] - f[i0]/slope
+          elif ( z0[i0] > zcmin )&( z0[i0] < z0[-1] ):
+             zTd[i] = z0[i0] - f[i0]/slope 
+          else:
+             a = 0 # Dummy statement
+       elif lichanges == 2:
+             i1 = ichanges[0]
+             i2 = ichanges[1]
+             slope = ( f[i1+1] - f[i1] )/( z0[i1+1] - z0[i1] )
+             zTu[i] = z0[i1] - f[i1]/slope
+             slope = ( f[i2+1] - f[i2] )/( z0[i2+1] - z0[i2] )            
+             zTd[i] = z0[i2] - f[i2]/slope     
+       else:
+          a = 0 # Dummy statement
+#======================================================================
+# Turning points for rays: 
+#======================================================================
+
+   zTuq = zeros(nk)
+   zTdq = zTuq + z0[-1]
+
+   for i in range(nk):
+       cT = cmin/cos( thetas[i]*pi/180 )
+       f = c0 - cT 
+       fS = sign(f)
+       dfS = diff(fS)
+       ichanges = where( dfS != 0 )[0]
+       lichanges = size( ichanges )
+       if lichanges == 1:
+          i0 = ichanges[0]
+          i1 = i0 + 1
+          slope = ( f[i1] - f[i0] )/( z0[i1] - z0[i0] )
+          if ( z0[i0] < zcmin )&( z0[i0] > z0[0] ):
+               zTuq[i] = z0[i0] - f[i0]/slope
+          elif ( z0[i0] > zcmin )&( z0[i0] < z0[-1] ):
+               zTdq[i] = z0[i0] - f[i0]/slope
+          else:
+             a = 0
+       elif lichanges == 2:
+         i1 = ichanges[0]
+         i2 = ochanges[1]
+         slope = ( f[i1+1] - f[i1] )/( z0[i1+1] - z0[i1] )
+         zTuq[i] = z0[i1] - f[i1]/slope
+         slope = ( f[i2+1] - f[i2] )/( z0[i2+1] - z0[i2] )
+         zTdq[i] = z0[i2] - f[i2]/slope         
+       else:
+         a = 0
+       m = linspace(1,nk,nk)
+       figure(3)
+       plot(m,zTu   ,'ko')
+       plot(m,zTuq+1,'k^')
+       plot(m,zTdq-1,'kv')
+       plot(m,zTd   ,'ks')
+       grid(True)
+       xlim(0,nk)
+       ylim(z0[-1]+5,-5)
+       xlabel('Mode index')
+       ylabel('Depth (m)')
+       title('Turning depths')
 show()
 
 print("done.")
