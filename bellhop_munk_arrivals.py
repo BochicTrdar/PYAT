@@ -1,14 +1,13 @@
 #=======================================================================
 # 
 # Bellhop: Munk profile + arrivals
-# Faro, Seg 11 Abr 2022 12:48:23 WEST 
+# Gambelas, qui 20 jun 2024 11:47:17 
 # Written by Orlando Camargo Rodriguez 
 # 
 #=======================================================================
 
 from os import system
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wbellhopenvfil import *
 from read_arrivals_asc import *

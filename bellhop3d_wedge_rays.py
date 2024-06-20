@@ -1,14 +1,13 @@
 #======================================================================
 # 
 # Bellhop3D: ray tracing test
-# Faro, Seg 11 Abr 2022 13:38:00 WEST 
+# Gambelas, qui 20 jun 2024 11:41:28 
 # Written by Orlando Camargo Rodriguez 
 #
 #======================================================================
 
 from os import system
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wbellhop3denv import *
 from plotray3d import *

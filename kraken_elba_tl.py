@@ -1,7 +1,7 @@
 #==================================================================
 #  
 #  KRAKEN: Elba waveguide
-#  Faro, Ter 28 Jun 2022 19:37:45 WEST 
+#  Gambelas, qui 20 jun 2024 12:24:40 
 #  Written by Orlando Camargo Rodriguez 
 #  
 #==================================================================
@@ -9,12 +9,10 @@
 from os import *
 import sys
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wkrakenenvfil import *
 from readshd import *
 from readmod import *
-
 
 print('Elba waveguide:') 
 
@@ -77,7 +75,7 @@ scatter_data= {"bumden":bumden,"eta":eta,"xi":xi}
 #  
 #==================================================================
 
-sspdata = loadtxt("ssp.dat")
+sspdata = loadtxt("elba.ssp")
 
 z = sspdata[:,0]; zmax = max( z )
 c = sspdata[:,1]
@@ -89,7 +87,7 @@ ast = cs
 type  = 'H'
 itype = 'N'
 # Number of mesh points to use initially, should be about 10 per vertical wavelenght:
-nmesh = 501
+nmesh = 0
 sigma = 0.0 # RMS roughness at the surface 
 clow  = 1500.0
 chigh = 1800.0
@@ -152,7 +150,9 @@ system("field.exe elba < elba.flp")
 print( "Reading output data..." )
 
 filename = 'elba.shd'
-pressure,geometry = readshd(filename,nan,nan,nan)
+xs = nan
+ys = nan
+pressure,geometry = readshd(filename,xs,ys,freq)
 
 Modes,bc = readmod('elba.mod')
 
@@ -161,19 +161,19 @@ rarray = geometry["rarray"]
 zarray = geometry["zarray"]
 
 p = squeeze( pressure, axis=(0,1) )
-tl = 20*log10( abs( p ) )
+tl = -20*log10( abs( p ) )
 
 figure(1)
-imshow(tl,extent=[0,rmax,-Dmax,0], aspect='auto',cmap='jet',vmin=-80,vmax=-30)
+imshow(tl,extent=[0,rmax,Dmax,0], aspect='auto',cmap='jet_r',vmin=30,vmax=80)
 colorbar()
-plot([0,rmax],[-98  , -98],'k',linewidth=2)
-plot([0,rmax],[-103, -103],'k',linewidth=2)
-plot([0,rmax],[-128, -128],'k',linewidth=2)
-plot(rs,-zs,marker="<",markersize=16,color="k")
+plot([0,rmax],[98  , 98],'k',linewidth=2)
+plot([0,rmax],[103, 103],'k',linewidth=2)
+plot([0,rmax],[128, 128],'k',linewidth=2)
+plot(rs,zs,marker="<",markersize=16,color="k")
 xlabel('Range (m)')
 ylabel('Depth (m)')
 title('KRAKEN - Elba waveguide')
-ylim(-Dmax,0)
+ylim(Dmax,0)
 
 phi = Modes["phi"]
 z   = Modes["z"]
@@ -185,8 +185,9 @@ for i in range(4):
    iphi = imag( phi[ : , i ] )
    thetitle = 'Z_'  + str(i+1) + '(z)' 
    subplot(1,4,i+1)
-   plot(rphi,-z,iphi,-z,'r--')
+   plot(rphi,z,iphi,z,'r--')
    title( thetitle )
+   ylim(Dmax,0)
    grid(True)
 subplot(141)
 ylabel('Depth (m)')

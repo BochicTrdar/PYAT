@@ -1,14 +1,13 @@
 #=======================================================================
 # 
 # Bellhop: Block problem
-# Faro, Ter 28 Jun 2022 19:36:13 WEST 
+# Gambelas, qui 20 jun 2024 11:46:02  
 # Written by Orlando Camargo Rodriguez 
 # 
 #=======================================================================
 
 from os import system
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wbellhopenvfil import *
 from readshd import *
@@ -112,7 +111,9 @@ system("bellhop.exe block")
 print( "Reading output data..." )
 
 filename = 'block.shd'
-pressure,geometry = readshd(filename,nan,nan,nan)
+xs = nan
+ys = nan
+pressure,geometry = readshd(filename,xs,ys,freq)
 
 p = squeeze( pressure, axis=(0,1) )
 p = where( p == 0, nan, p )

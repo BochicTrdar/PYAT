@@ -2,7 +2,7 @@
 #  
 #  KRAKEN: Elba waveguide
 #  Source localization with the Bartlett estimator
-#  Faro, Ter 28 Jun 2022 19:37:45 WEST 
+#  Gambelas, qui 20 jun 2024 12:22:50 
 #  Written by Orlando Camargo Rodriguez 
 #  
 #==================================================================
@@ -10,7 +10,6 @@
 from os import *
 import sys
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wkrakenenvfil import *
 from readshd import *
@@ -77,7 +76,7 @@ scatter_data= {"bumden":bumden,"eta":eta,"xi":xi}
 #  
 #==================================================================
 
-sspdata = loadtxt("ssp.dat")
+sspdata = loadtxt("elba.ssp")
 
 z = sspdata[:,0]; zmax = max( z )
 c = sspdata[:,1]

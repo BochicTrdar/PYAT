@@ -8,7 +8,6 @@
 
 from os import system
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wbellhopenvfil import *
 from plotray import *

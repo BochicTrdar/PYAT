@@ -1,14 +1,13 @@
 #======================================================================
 # 
 # Bellhop3D: tl test
-# Faro, Ter 28 Jun 2022 19:35:51 WEST 
+# Gambelas, qui 20 jun 2024 11:43:26 
 # Written by Orlando Camargo Rodriguez 
 #
 #======================================================================
 
 from os import *
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wbellhop3denv import *
 from readshd import *
@@ -122,12 +121,14 @@ system("bellhop3d.exe wedge")
 print( "Reading output data..." )
 
 filename = 'wedge.shd'
-pressure,geometry = readshd(filename,xs,ys,nan)
+pressure,geometry = readshd(filename,xs,ys,freq)
 
 p = squeeze( pressure, axis=(0,1) )
 p = squeeze( p )
 
-tl = 20*log10( abs( p ) )
+tl = -20*log10( abs( p ) )
+tlmin = min( tl )
+tlmax = max( tl )
 
 thetitle = 'Bellhop3D @ ' + str(freq) + ' Hz'
 
@@ -136,6 +137,7 @@ grid(True)
 plot( yarraykm, tl, linewidth=2 )
 xlabel('ACROSS SLOPE RANGE [in km]')
 ylabel('TLOSS [in dB]')
+ylim(tlmax,tlmin)
 title( thetitle )
 
 show()

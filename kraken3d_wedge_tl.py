@@ -1,14 +1,13 @@
 #======================================================================
 # 
 # KRAKEN3D: wedge problem
-# Faro, Seg 11 Abr 2022 13:29:31 WEST 
+# Gambelas, qui 20 jun 2024 12:21:53 
 # Written by Orlando Camargo Rodriguez 
 #
 #======================================================================
 
 import os
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wkrakenenvfil import *
 from readshd import *
@@ -307,7 +306,7 @@ os.system("field3d.exe 3dpe > field3d.prt")
 print( "Reading output data..." )
 
 filename = '3dpe.shd'
-pressure,geometry = readshd(filename,xs,ys,nan)
+pressure,geometry = readshd(filename,xs,ys,freq)
 
 thetas = geometry["thetas"]
 rarray = geometry["rarray"]

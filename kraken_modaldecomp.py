@@ -2,7 +2,7 @@
 #  
 #  KRAKEN: Elba waveguide
 #  Source localization with modal decomposition
-#  Faro, Qua 29 Jun 2022 16:27:02 WEST 
+#  Gambelas, qui 20 jun 2024 12:25:01 
 #  Written by Orlando Camargo Rodriguez 
 #  
 #==================================================================
@@ -10,7 +10,6 @@
 from os import *
 import sys
 from numpy import *
-from scipy.io import *
 from matplotlib.pyplot import *
 from wkrakenenvfil import *
 from readmod import *
@@ -78,7 +77,7 @@ scatter_data= {"bumden":bumden,"eta":eta,"xi":xi}
 #  
 #==================================================================
 
-sspdata = loadtxt("ssp.dat")
+sspdata = loadtxt("elba.ssp")
 
 z = sspdata[:,0]; zmax = max( z )
 c = sspdata[:,1]
