@@ -53,7 +53,7 @@ def fieldsco( filename=None, zs=None, zarray=None, freqVec=None ):
        print( 'Using source beam pattern file' )
        sbpfil = fileroot + '.sbp'
        fid = open( sbpfil, 'r' )    
-       theline = fid.readline; NSBPPts = int( theline )
+       theline = fid.readline(); NSBPPts = int( theline )
        print( 'Number of source beam pattern points =', NSBPPts )
        SrcBmPat = zeros( (NSBPPts, 2) )
        print( ' ' )
@@ -154,7 +154,7 @@ def fieldsco( filename=None, zs=None, zarray=None, freqVec=None ):
              elif Opt[2] == 'N': # check this !!!
                  G = scalecol( G, factor1 )                        
                  Y = -matmul( G , X2 )
-             elif Opt[2] == 'N': # check this !!!
+             elif Opt[2] == 'B': # check this !!!
                  G = scalecol( G, factor1 )                       
                  Y = -matmul( G , ( X + X2 ) )
              else:
