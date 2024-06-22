@@ -5,8 +5,8 @@ def wbounceenvfil(filename=None, thetitle=None, freq=None, nmedia=None, options=
     # SYNTAX: wbounceenvfil(filename, thetitle, freq, nmedia, options, water_info, layers_info, rmax, clow, chigh)
 
     #*******************************************************************************
-    # Faro, Seg 11 Abr 2022 18:01:02 WEST 
-    # Written by Orlando Camargo Rodriguez
+    # Faro, Fri Jun 21 11:27:39 PM WEST 2024
+    # Written by Tordar
     #*******************************************************************************
     
     envfil = filename + '.env'
