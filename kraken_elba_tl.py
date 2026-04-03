@@ -1,7 +1,7 @@
 #==================================================================
 #  
 #  KRAKEN: Elba waveguide
-#  Faro, qui 20 jun 2024 19:57:16 
+#  Mexilhoeira Grande, sex 03 abr 2026 14:46:22 
 #  Written by Orlando Camargo Rodriguez 
 #  
 #==================================================================
@@ -11,8 +11,8 @@ import sys
 from numpy import *
 from matplotlib.pyplot import *
 from wkrakenenvfil import *
-from readshd import *
-from readmod import *
+from read_shd import *
+from read_modes import *
 
 print('Elba waveguide:') 
 
@@ -154,16 +154,12 @@ system("field.exe elba < elba.flp")
 
 print( "Reading output data..." )
 
-filename = 'elba.shd'
-xs = nan
-ys = nan
-pressure,geometry = readshd(filename,xs,ys,freq)
+PlotTitle, PlotType, freqVec, freq0, atten, Pos, pressure = read_shd('elba')
 
-Modes,bc = readmod('elba.mod')
-
-zs     = geometry["zs"]
-rarray = geometry["rarray"]
-zarray = geometry["zarray"]
+Modes = read_modes( 'elba.mod', freq )
+k   = Modes[ 'k' ]
+phi = Modes['phi']
+z   = Modes[ 'z' ]
 
 p = squeeze( pressure, axis=(0,1) )
 tl = -20*log10( abs( p ) )
@@ -179,10 +175,6 @@ xlabel('Range (m)')
 ylabel('Depth (m)')
 title('KRAKEN - Elba waveguide')
 ylim(Dmax,0)
-
-phi = Modes["phi"]
-z   = Modes["z"]
-k   = Modes["k"]
 
 figure(2)
 for i in range(4):  
