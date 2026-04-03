@@ -1,7 +1,7 @@
 #=======================================================================
 # 
 # Bellhop: Block problem
-# Gambelas, qui 20 jun 2024 11:46:02  
+# Mexilhoeira Grande, sex 03 abr 2026 14:24:05 
 # Written by Orlando Camargo Rodriguez 
 # 
 #=======================================================================
@@ -10,7 +10,7 @@ from os import system
 from numpy import *
 from matplotlib.pyplot import *
 from wbellhopenvfil import *
-from readshd import *
+from read_shd import *
 
 case_title = "Block problem"
 
@@ -110,10 +110,7 @@ system("bellhop.exe block")
 
 print( "Reading output data..." )
 
-filename = 'block.shd'
-xs = nan
-ys = nan
-pressure,geometry = readshd(filename,xs,ys,freq)
+PlotTitle, PlotType, freqVec, freq0, atten, Pos, pressure = read_shd('block')
 
 p = squeeze( pressure, axis=(0,1) )
 p = where( p == 0, nan, p )
